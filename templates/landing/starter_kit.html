@@ -1,0 +1,71 @@
+{% extends "landing/base.html" %}
+{% block content %}
+<section class="hero">
+  <div class="wrap">
+    <p class="eyebrow">For bar trivia hosts · Free Starter Kit</p>
+    <h1>Stop the phone cheating. Keep the room in the game.</h1>
+    <p class="lede">Your regulars already know the music round is being Shazamed. Phone-Free Night gives guests points for keeping phones down, puts local sponsors on the leaderboard, and ends the night with a raffle you can actually check.</p>
+    <div class="cta-row">
+      <a class="btn" href="#get-the-kit">Get the free Starter Kit</a>
+      <a class="btn btn-ghost" href="#how-it-works">See how a night runs</a>
+    </div>
+    <div class="proof">
+      <div><strong>913%</strong> rise in US phone-free event attendance, 2024–2025, per Eventbrite</div>
+      <div><strong>10 minutes</strong> to set up a night, QR join, no guest app</div>
+      <div><strong>$19/mo</strong> for weekly hosts, after the free kit</div>
+    </div>
+  </div>
+</section>
+
+<section class="wrap">
+  <h2>The 10:30pm problem every trivia host knows</h2>
+  <p>You don't need a lecture about screen time. You need a night where a cheating accusation doesn't ruin the room. Today most hosts fix it with pen and paper, walking the floor, and hoping nobody notices the Apple Watch. That works until it doesn't — and it never pays for itself.</p>
+  <p>Phone-Free Night doesn't replace your questions, your host, or your regulars. It adds three things on top of the night you already run: a reason to keep phones down, a visible leaderboard, and a sponsor-funded reason to stay till the raffle.</p>
+
+  <h2 id="how-it-works">How a night runs</h2>
+  <div class="grid">
+    <div class="card"><div class="num">1</div><h3>Set it up in 10 minutes</h3><p>Create the event, add your sponsor prize, print the table tents. Guests join by QR code in their browser. No app download, no account for guests.</p></div>
+    <div class="card"><div class="num">2</div><h3>Guests lock in, points add up</h3><p>Guests earn phone-free minutes during rounds. Intermission pauses the clock. Unlocks are visible — social pressure does the work pouches used to do.</p></div>
+    <div class="card"><div class="num">3</div><h3>Sponsors on the leaderboard, raffle at the end</h3><p>A local brewery, tattoo shop, or burger joint funds a prize and gets named on the leaderboard all night. Draw the raffle weighted by phone-free minutes, with a seed and hash you can show anyone who asks how it was drawn.</p></div>
+  </div>
+
+  <div class="callout">
+    <h3>What this is not — and why that matters</h3>
+    <p><strong>Not perfect lock proof.</strong> Phones and watches buzz. We don't claim to certify a locked phone, and we don't hide unlocks. <strong>Not pouches.</strong> No hardware to buy, store, or unlock at the door. <strong>Not a new trivia app to learn.</strong> If you already run trivia, this is scoring, a leaderboard, and a raffle on top of it.</p>
+  </div>
+
+  <h2>What's in the free Starter Kit</h2>
+  <div class="grid">
+    <div class="card"><h3>Printable table tents</h3><p>One page per table: the house rule, the QR code space, and the prize. Print it, put it out, done.</p></div>
+    <div class="card"><h3>60-second host script</h3><p>Exactly what to say at the start so guests opt in instead of rolling their eyes.</p></div>
+    <div class="card"><h3>QR raffle page</h3><p>Guests join, see the leaderboard, and stay for the draw.</p></div>
+    <div class="card"><h3>Sponsor pitch template</h3><p>One page to ask a local business for a prize in exchange for a named leaderboard slot all night.</p></div>
+  </div>
+
+  <h2 id="pricing">Pricing, plainly</h2>
+  <div class="grid">
+    <div class="card"><h3>Starter Kit</h3><p class="price">Free</p><p>Run one phone-free night this weekend with the kit above. No card required.</p></div>
+    <div class="card"><h3>Free host account</h3><p class="price">$0 <span>/ 1 event a month</span></p><p>Up to 50 guests, QR join, raffle draw, basic leaderboard.</p></div>
+    <div class="card"><h3>Weekly Host</h3><p class="price">$19 <span>/ month</span></p><p>Unlimited weekly events, phone-free-minute scoring, sponsor leaderboard slots, intermission timers. Sponsor prize pools carry a platform fee, shown before you load a pool.</p></div>
+  </div>
+
+  <h2>Questions hosts actually ask</h2>
+  <div class="grid">
+    <div class="card"><h3>Do guests need an app?</h3><p>No. They open a link in their browser from your QR code.</p></div>
+    <div class="card"><h3>What if someone just cheats anyway?</h3><p>They can, and unlocks show up. For a low-stakes raffle, visible unlocks plus a room full of regulars beat a perfect technical lock that doesn't exist on iOS or Android.</p></div>
+    <div class="card"><h3>Is this only for trivia?</h3><p>Trivia first, because it's weekly, hosts already pay for software, and cheating is a named pain. Comedy and other live nights come later, through the same towns.</p></div>
+    <div class="card"><h3>What if my sponsor just hands over a gift card?</h3><p>List it on the leaderboard anyway. The sponsor still gets named all night, and guests still play for it.</p></div>
+  </div>
+
+  <section id="get-the-kit" class="form-card">
+    <h2 style="margin-top:0">Get the free Starter Kit</h2>
+    <p>Enter your email and we'll show you the kit right away: table tents, host script, and sponsor pitch. No card, no sales call first.</p>
+    <form method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button class="btn" type="submit">Send me the kit</button>
+    </form>
+    <p class="muted">For bar trivia hosts. We'll email you when the weekly host plan opens, and you can unsubscribe anytime.</p>
+  </section>
+</section>
+{% endblock %}

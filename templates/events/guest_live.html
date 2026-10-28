@@ -1,0 +1,35 @@
+{% extends "events/base.html" %}
+{% block content %}
+<h1>{{ event.title }}</h1>
+<p class="muted">{{ event.venue_name }} · Status {{ event.status }}</p>
+<div class="card">
+  <p>Hi {{ guest.display_name }}{% if guest.team_name %}, team {{ guest.team_name }}{% endif %}.</p>
+  <p>Phone-free minutes: <strong id="minutes">{{ guest.phone_free_minutes }}</strong></p>
+  <p>Unlocks: {{ guest.unlock_count }} · Raffle entries: {{ guest.raffle_entries }}</p>
+  <p id="timer" class="muted">{% if guest.is_locked %}Locked — timer running{% else %}Unlocked — lock your phone to earn again{% endif %}</p>
+  <form method="post" action="{% url 'guest-toggle' guest.token %}">
+    {% csrf_token %}
+    <button type="submit">{% if guest.is_locked %}I unlocked my phone{% else %}Lock in again{% endif %}</button>
+  </form>
+  <p class="muted">This is social, not perfect, phone-lock proof. The host can see unlocks on the leaderboard.</p>
+</div>
+<div hx-get="{% url 'leaderboard-fragment' event.pk %}" hx-trigger="every 5s" hx-swap="innerHTML">
+  {% include "events/_leaderboard.html" with guests=event.leaderboard %}
+</div>
+<script>
+  // Local countdown display only. The server is the source of truth
+  // when the guest toggles lock state.
+  let seconds = 0;
+  const timer = document.getElementById("timer");
+  const minutesEl = document.getElementById("minutes");
+  const baseMinutes = parseInt(minutesEl.textContent, 10) || 0;
+  {% if guest.is_locked %}
+  setInterval(function () {
+    seconds += 1;
+    const total = baseMinutes + Math.floor(seconds / 60);
+    minutesEl.textContent = total;
+    timer.textContent = "Locked — " + Math.floor(seconds / 60) + " minutes this lock";
+  }, 1000);
+  {% endif %}
+</script>
+{% endblock %}

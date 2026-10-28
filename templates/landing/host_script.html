@@ -1,0 +1,23 @@
+{% extends "landing/base.html" %}
+{% block content %}
+<section class="wrap">
+  <div class="no-print"><p><a href="{% url 'starter-kit-download' %}">← Back to the kit</a> · Print this page and keep it by the mic.</p></div>
+  <h1>60-second host script</h1>
+  <p><strong>Read this, in your own words, before round one.</strong></p>
+  <blockquote style="border-left:4px solid #f59e0b; padding-left:1rem; font-size:1.2rem;">
+    <p>"Welcome to trivia. Tonight we're trying something simple: phones down, game on.</p>
+    <p>Scan the QR code on your table. You'll earn points for every minute your phone stays down. If you unlock, it shows on the leaderboard — no punishment, just fewer points.</p>
+    <p>At the end, we draw a raffle from your phone-free minutes. Tonight's prize is from [sponsor name], so thanks to them for putting it up.</p>
+    <p>Intermission is free time — use your phones then. When we come back, lock in again. Good luck."</p>
+  </blockquote>
+  <h2>After the night, write down</h2>
+  <ul>
+    <li>Guests who joined: ______</li>
+    <li>Guests who stayed for the raffle: ______</li>
+    <li>Cheating complaints: ______</li>
+    <li>Would you run it again next week? Yes / No / With changes: ______</li>
+  </ul>
+  <h2>What not to say</h2>
+  <p>Don't say phones are locked, banned, or monitored. They aren't. Say guests opt in, unlocks are visible, and the raffle rewards staying in the room.</p>
+</section>
+{% endblock %}

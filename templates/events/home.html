@@ -1,0 +1,14 @@
+{% extends "events/base.html" %}
+{% block content %}
+<h1>Phone-Free Night</h1>
+<p>Trivia hosts run phone-free nights. Guests join by QR code, earn points for phone-free minutes, and enter a sponsor raffle.</p>
+<p><a href="{% url 'guest-join' %}">Join an event</a> or <a href="{% url 'event-create' %}">create one as a host</a>. New host? <a href="{% url 'starter-kit' %}">Get the free Starter Kit</a>.</p>
+{% if events %}
+<h2>Live now</h2>
+<ul>
+  {% for event in events %}
+  <li>{{ event.title }} at {{ event.venue_name }} — code {{ event.join_code }}</li>
+  {% endfor %}
+</ul>
+{% endif %}
+{% endblock %}

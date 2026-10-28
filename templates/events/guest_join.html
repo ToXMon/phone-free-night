@@ -1,0 +1,10 @@
+{% extends "events/base.html" %}
+{% block content %}
+<h1>Join an event</h1>
+<p>Scan the host's QR code, or type the join code from the screen.</p>
+<form method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit">Join</button>
+</form>
+{% endblock %}

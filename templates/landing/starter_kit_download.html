@@ -1,0 +1,28 @@
+{% extends "landing/base.html" %}
+{% block content %}
+<section class="wrap">
+  <h1>Your Starter Kit is ready</h1>
+  <p class="lede">Print these two pages, read the script once, and you can run a phone-free night this weekend.</p>
+  <div class="grid">
+    <div class="card">
+      <h3>1. Table tents</h3>
+      <p>Print one per table. Cut, fold, put it out before guests sit down.</p>
+      <p><a class="btn" href="{% url 'starter-kit-table-tent' %}">Open table tents to print</a></p>
+    </div>
+    <div class="card">
+      <h3>2. Host script</h3>
+      <p>Sixty seconds at the start. Say it like you mean it, then start round one.</p>
+      <p><a class="btn" href="{% url 'starter-kit-host-script' %}">Open host script to print</a></p>
+    </div>
+    <div class="card">
+      <h3>3. Sponsor pitch</h3>
+      <p>Copy this into a message to a local business: "Fund one prize, get named on the leaderboard all night, and get mentioned at the raffle." Offer one prize first — a gift card, a case, free tickets — not a package.</p>
+    </div>
+    <div class="card">
+      <h3>4. Run it, then tell us</h3>
+      <p>After your night, note three numbers: how many guests joined, how many stayed for the raffle, and whether anyone complained about cheating. Those three numbers decide whether the $19 weekly plan is worth it for you.</p>
+      <p><a href="{% url 'event-create' %}">Create your first event in the host app</a></p>
+    </div>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,13 @@
+{% extends "events/base.html" %}
+{% block content %}
+<h1>Host dashboard</h1>
+<p><a href="{% url 'event-create' %}">Create an event</a></p>
+{% for event in events %}
+<div class="card">
+  <p><a href="{% url 'event-detail' event.pk %}">{{ event.title }}</a> — {{ event.venue_name }}</p>
+  <p class="muted">Code {{ event.join_code }} · Status {{ event.status }} · Starts {{ event.starts_at }}</p>
+</div>
+{% empty %}
+<p>No events yet. Create your first trivia night.</p>
+{% endfor %}
+{% endblock %}

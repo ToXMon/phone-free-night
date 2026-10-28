@@ -1,0 +1,20 @@
+{% extends "events/base.html" %}
+{% block content %}
+<h1>{{ event.title }}</h1>
+<p class="muted">{{ event.venue_name }} · Join code {{ event.join_code }} · Status {{ event.status }}</p>
+{% if event.sponsor_name %}
+<p>Sponsor: {{ event.sponsor_name }} — {{ event.sponsor_prize }}</p>
+{% endif %}
+<form method="post" action="{% url 'event-set-status' event.pk 'live' %}">{% csrf_token %}<button type="submit">Go live</button></form>
+<form method="post" action="{% url 'event-set-status' event.pk 'paused' %}">{% csrf_token %}<button type="submit">Pause (intermission)</button></form>
+<form method="post" action="{% url 'event-set-status' event.pk 'ended' %}">{% csrf_token %}<button type="submit">End event</button></form>
+{% if event.raffle_winner %}
+<p><strong>Raffle winner: {{ event.raffle_winner.display_name }}</strong></p>
+<p class="muted">Seed: {{ event.raffle_seed }} · Hash: {{ event.raffle_seed_hash }}</p>
+{% else %}
+<form method="post" action="{% url 'event-raffle' event.pk %}">{% csrf_token %}<button type="submit">Draw raffle</button></form>
+{% endif %}
+<div hx-get="{% url 'leaderboard-fragment' event.pk %}" hx-trigger="every 5s" hx-swap="innerHTML">
+  {% include "events/_leaderboard.html" %}
+</div>
+{% endblock %}
