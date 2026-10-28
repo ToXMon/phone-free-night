@@ -1,5 +1,6 @@
 import os
 from pathlib import Path
+from urllib.parse import parse_qs, urlparse
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -53,18 +54,57 @@ TEMPLATES = [
 WSGI_APPLICATION = "config.wsgi.application"
 ASGI_APPLICATION = "config.asgi.application"
 
+
 # Local default is SQLite so the scaffold runs with no setup.
-# In production set POSTGRES_* and this switches to Postgres.
-if os.environ.get("POSTGRES_DB"):
+# Production: DATABASE_URL wins (Neon, Fly, Render all provide one), then
+# POSTGRES_* / PG* (Neon's console shows PG*), then SQLite.
+# Neon notes, from Neon's own Django guide:
+# - Use the -pooler endpoint for a web app, so PgBouncer pools connections.
+# - sslmode=require on any *.neon.tech host.
+# - DISABLE_SERVER_SIDE_CURSORS and CONN_HEALTH_CHECKS keep pooled
+#   connections from going stale after Neon scales to zero.
+def _postgres_config(name, user, password, host, port):
+    config = {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": name,
+        "USER": user,
+        "PASSWORD": password,
+        "HOST": host,
+        "PORT": port,
+    }
+    if host.endswith("neon.tech"):
+        config["OPTIONS"] = {"sslmode": "require"}
+        config["DISABLE_SERVER_SIDE_CURSORS"] = True
+        config["CONN_HEALTH_CHECKS"] = True
+    return config
+
+
+def _database_from_url(url):
+    parsed = urlparse(url)
+    query = parse_qs(parsed.query)
+    config = _postgres_config(
+        parsed.path.lstrip("/"),
+        parsed.username or "",
+        parsed.password or "",
+        parsed.hostname or "",
+        str(parsed.port or 5432),
+    )
+    if "sslmode" in query:
+        config.setdefault("OPTIONS", {})["sslmode"] = query["sslmode"][0]
+    return config
+
+
+if os.environ.get("DATABASE_URL"):
+    DATABASES = {"default": _database_from_url(os.environ["DATABASE_URL"])}
+elif os.environ.get("POSTGRES_DB") or os.environ.get("PGHOST"):
     DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.postgresql",
-            "NAME": os.environ["POSTGRES_DB"],
-            "USER": os.environ.get("POSTGRES_USER", "postgres"),
-            "PASSWORD": os.environ.get("POSTGRES_PASSWORD", ""),
-            "HOST": os.environ.get("POSTGRES_HOST", "localhost"),
-            "PORT": os.environ.get("POSTGRES_PORT", "5432"),
-        }
+        "default": _postgres_config(
+            os.environ.get("POSTGRES_DB") or os.environ.get("PGDATABASE", ""),
+            os.environ.get("POSTGRES_USER") or os.environ.get("PGUSER", "postgres"),
+            os.environ.get("POSTGRES_PASSWORD") or os.environ.get("PGPASSWORD", ""),
+            os.environ.get("POSTGRES_HOST") or os.environ.get("PGHOST", "localhost"),
+            os.environ.get("POSTGRES_PORT") or os.environ.get("PGPORT", "5432"),
+        )
     }
 else:
     DATABASES = {
